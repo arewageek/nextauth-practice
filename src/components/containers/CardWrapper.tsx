@@ -2,15 +2,17 @@ import React from "react";
 import { Card, CardContent, CardFooter, CardTitle } from "../ui/card";
 import { Lock } from "lucide-react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
-type cardWrapperInterface = {
+interface cardWrapperInterface {
   children: React.ReactNode;
   headerLabel: string;
   desc: string;
   backButtonLabel: string;
   backButtonHref: string;
   showSocials: boolean;
-};
+}
 
 const CardWrapper = ({
   children,
@@ -32,8 +34,13 @@ const CardWrapper = ({
         </p>
       </CardTitle>
       <CardContent>{children}</CardContent>
+      {showSocials && (
+        <CardFooter>
+          <SocialCard />
+        </CardFooter>
+      )}
       <CardFooter>
-        <SocialCard />
+        <BackButton href={backButtonHref} label={backButtonLabel} />
       </CardFooter>
     </Card>
   );
@@ -50,11 +57,26 @@ const SocialCard = () => {
       {socials.map((social, index) => (
         <div
           key={index}
-          className="flex items-center justify-center w-full py-4  bg-white shadow rounded-lg dark:bg-gray-800 text-gray-800 dark:text-gray-100 hover:bg-gray-100 transition duration-300 cursor-pointer"
+          className="flex items-center justify-center w-full py-4  bg-gray-800 shadow rounded-lg text-gray-100 hover:text-gray-50 hover:bg-gray-900 transition duration-300 cursor-pointer"
         >
           {social.icon}
         </div>
       ))}
+    </div>
+  );
+};
+
+interface BackButtonInterface {
+  label: string;
+  href: string;
+}
+
+const BackButton = ({ href, label }: BackButtonInterface) => {
+  return (
+    <div className="text-center mx-auto">
+      <Button variant="link" className="font-normal w-full" size="sm">
+        <Link href={href}>{label}</Link>
+      </Button>
     </div>
   );
 };
